@@ -1,0 +1,4 @@
+title: title
+user: user
+password: 12345
+mail: 273416@uwr.edu.pl

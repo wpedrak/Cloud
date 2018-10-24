@@ -1,0 +1,5 @@
+- hosts: http-server-test
+  become: yes
+  tasks:
+    - include_role:
+        name: http-simple-setup

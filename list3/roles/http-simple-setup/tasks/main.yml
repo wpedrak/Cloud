@@ -1,0 +1,13 @@
+---
+# tasks file for http-simple-setup
+
+- name: Ensure apache is present or install it
+  apt:
+    name: apache2
+    state: present
+  tags: [http_server, packages]
+- name: Copy static site to apache
+  copy:
+    src: site/index.html
+    dest: /var/www/html/index.html
+  tags: [http_server, static_site]
