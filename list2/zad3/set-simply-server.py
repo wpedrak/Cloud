@@ -21,7 +21,7 @@ def execute_commands_on_linux_instances(instance_ip, commands):
     c = Connection(
         host=instance_ip, 
         user='ubuntu', 
-        connect_kwargs={'key_filename': '../../cloud2018.pem'}
+        connect_kwargs={'key_filename': '~/.ssh/cloud2018.pem'}
     )
     # r = Responder(
     #     pattern=r'Do you want to continue? \[Y/n\]',
