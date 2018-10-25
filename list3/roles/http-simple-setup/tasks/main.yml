@@ -10,4 +10,4 @@
   copy:
     src: site/index.html
     dest: /var/www/html/index.html
-  tags: [http_server, static_site]
+  tags: [http_server, copy]

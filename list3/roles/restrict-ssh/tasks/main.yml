@@ -1,0 +1,18 @@
+---
+# tasks file for restrict-ssh
+
+- name: Disallow ssh via password
+  replace: 
+    dest='​/etc/ssh/sshd_config' 
+    regexp='PasswordAuthentication yes'
+    replace='PasswordAuthentication no'
+  tags: [config, ssh]
+
+- name: Disallow ssh from intrnet
+  replace: 
+    dest='​/etc/ssh/sshd_config' 
+    regexp='#ListenAddress 0.0.0.0'
+    replace='ListenAddress 172.31.16.0/20'
+  tags: [config, ssh]
+
+

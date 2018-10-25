@@ -1,4 +1,4 @@
-- hosts: http-server-test
+- hosts: http-server
   become: yes
   tasks:
     - include_role:

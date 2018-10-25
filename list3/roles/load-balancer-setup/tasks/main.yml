@@ -1,0 +1,23 @@
+---
+# tasks file for load-balancer-setup
+
+- name: Ensure haproxy is present or install it
+  apt:
+    name: haproxy
+    state: present
+  tags: [load-balancer, packages]
+
+- name: Copy haproxy config from template
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+  notify: 
+    - restart haproxy
+  tags: [load-balancer, copy]
+
+- name: Enable init script
+  replace: 
+    dest='/etc/default/haproxy' 
+    regexp='ENABLED=0'
+    replace='ENABLED=1'
+  tags: [load-balancer]

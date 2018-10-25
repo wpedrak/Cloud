@@ -1,0 +1,5 @@
+- hosts: not-bastion
+  become: yes
+  tasks:
+    - include_role:
+        name: restrict-ssh

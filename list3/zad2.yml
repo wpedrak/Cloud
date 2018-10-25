@@ -1,0 +1,5 @@
+- hosts: load-balancer
+  become: yes
+  tasks:
+    - include_role:
+        name: load-balancer-setup

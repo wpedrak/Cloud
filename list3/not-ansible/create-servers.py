@@ -29,15 +29,22 @@ def create_insrances(number_of_instances):
         SecurityGroups=['launch-wizard-3'] # allow ssh and HTTP
     )
     print("created", number_of_instances, "instances. Waiting for 'running' state.")
-    ips = []
+    pub_ips = []
+    priv_ips = []
     for instance in instances:
-        instance = wait_for_instance_to_run(instance.id, timeout=60)
+        instance = wait_for_instance_to_run(instance.id)
         print("id, ip =", instance.id, instance.public_ip_address)
-        ips.append(instance.public_ip_address)
+        pub_ips.append(instance.public_ip_address)
+        priv_ips.append(instance.private_ip_address)
+            
     
-    print("IPs for easy copy-paste")
-    for ip in ips:
-        print(ip)
+    print("public IPs for easy copy-paste")
+    for pub_ip in pub_ips:
+        print(pub_ip)
+
+    print("private IPs for easy copy-paste")
+    for priv_ip in priv_ips:
+        print(priv_ip)
 
 if __name__ == '__main__':
     create_insrances(int(sys.argv[1]))
