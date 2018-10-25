@@ -1,0 +1,28 @@
+AWS:
+    EC2 (Elastic Compute Cloud)
+    RDS (Relational Database Service)
+    S3 (Simple Storage Service)
+    VPC (Virtual Private Cloud) - własne sieci i podsieci
+    ELB (Elastic Load Balancing)
+    Lambda
+    Route53 - DNSy
+    IAM (Identity and Administration Management)- dostępy i uprawnienia
+    Cloud Watch - monitoring i logi
+    ------how to use----------
+    konsoloka (web)
+    AWS CLI
+    API (HTTP)
+    libs / SDK
+    awless
+    -------------auth-------------
+    SECRET_KEY_ID
+    SECRET_ACCESS_KEY
+    put in ~/.aws.credentials
+    export AWS_PROFILE=... to set current profile
+
+    lib for python: boto3
+
+GCP:
+    Compute Engine
+    SQL
+    Storage
