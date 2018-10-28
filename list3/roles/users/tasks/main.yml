@@ -30,9 +30,9 @@
 
 - name: Allow users edit www files
   file:
-    path: /var/www
+    path: /var/www/http
     group: "www-user"
     recurse: yes
-    mode: 0774
+    mode: 0775
   when: file_details.stat.exists
   tags: [users, www]

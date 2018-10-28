@@ -17,7 +17,7 @@
 
 - name: Enable init script
   replace: 
-    dest='/etc/default/haproxy' 
-    regexp='ENABLED=0'
-    replace='ENABLED=1'
+    path: '/etc/default/haproxy' 
+    regexp: 'ENABLED=0'
+    replace: 'ENABLED=1'
   tags: [load-balancer]

@@ -1,2 +1,7 @@
 ---
 # handlers file for restrict-ssh
+
+- name: restart sshd
+  service: 
+    name: sshd
+    state: restarted
