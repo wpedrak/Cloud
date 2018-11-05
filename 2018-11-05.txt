@@ -1,0 +1,23 @@
+Infrastructure as Code (IaC)
+
+Narzędzia:
+
+- Cloud Formation (2011)
+    * AWS only
+    * JSON/yaml
+
+- Terraform (2015/2016)
+    * HashiCorp
+    * pluginy (providers)
+    * .tf
+        -> typ "rodzaj" "nazwa" { ... }
+        -> np. 
+            resource "aws_instance" "mojanazwa" {
+                ami = "ami-asdajnd"
+                ...
+            }
+    * operacje
+        -> terraform init
+        -> terraform apply
+        -> terraform destroy
+    * teraform v0.11
