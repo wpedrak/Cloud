@@ -1,0 +1,15 @@
+- hosts: http-server
+  become: yes
+  vars:
+    site_path: "./site/"
+  tasks:
+  - name: Ensure apache is present or install it
+    apt:
+      name: apache2
+      state: present
+    tags: [http_server, packages]
+  - name: Copy static site to apache
+    copy:
+      src: "{{ site_path }}"
+      dest: /var/www/html/
+    tags: [http_server, copy]
