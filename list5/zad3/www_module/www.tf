@@ -58,6 +58,6 @@ resource "google_compute_instance" "server" {
 }
 
 output "server_private_ips" {
-  value = "${google_compute_instance.server.network_interface.0.network_ip}"
+  value = "${google_compute_instance.server.*.network_interface.0.network_ip}"
 }
 
