@@ -1,0 +1,20 @@
+- hosts: load-balancer
+  become: yes
+  tasks:
+  - name: Ensure haproxy is present or install it
+    apt:
+      name: haproxy
+      state: present
+    tags: [load-balancer, packages]
+
+  - name: Enable init script
+    replace: 
+      path: '/etc/default/haproxy' 
+      regexp: 'ENABLED=0'
+      replace: 'ENABLED=1'
+    tags: [load-balancer]
+
+  - name: restart haproxy
+    service: 
+      name: haproxy
+      state: restarted
