@@ -14,6 +14,12 @@
       replace: 'ENABLED=1'
     tags: [load-balancer]
 
+  - name: Copy haproxy config (without ips)
+    copy:
+      src: haproxy.cfg
+      dest: /etc/haproxy/haproxy.cfg
+    tags: [load-balancer, copy]
+
   - name: restart haproxy
     service: 
       name: haproxy
