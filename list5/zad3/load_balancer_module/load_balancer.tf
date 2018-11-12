@@ -8,6 +8,7 @@ variable "image_name" {
 }
 
 variable "destination_ips" {
+  type        = "list"
   description = "List of ip addreses that will eventually get request from load-balancer"
 }
 
@@ -54,6 +55,9 @@ resource "google_compute_instance" "load_balancer" {
       image = "${var.image_name}"
     }
   }
+
+  metadata_startup_script = "echo >> /etc/haproxy/haproxy.cfg; IFS=' ' read -r -a array <<< \"${join(" ", var.destination_ips)}\"; for element in \"$${array[@]}\"; do echo \"   server $element $element:80 check\" >> /etc/haproxy/haproxy.cfg; done; /etc/init.d/haproxy restart" 
+  # metadata_startup_script = "IFS=' ' read -r -a array <<< \"ala ma kota chyba\"; for element in \"$${array[@]}\"; do echo \"   server $element $element:80 check\" >> /etc/haproxy/haproxy.cfg; done" 
 
   network_interface {
     subnetwork = "${google_compute_subnetwork.load-balancer_subnetwork.self_link}"

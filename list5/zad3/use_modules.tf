@@ -17,7 +17,7 @@ module "www_servers" {
   source = "./www_module/"
   
   # server_type    = "f1-micro"
-  # servers_number = 1
+  servers_number = 2
   image_name = "list5-www"
   network = "${google_compute_network.www_network.name}"
   region = "${local.region}"
