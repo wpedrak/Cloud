@@ -32,6 +32,7 @@ resource "google_compute_subnetwork" "load-balancer_subnetwork" {
 resource "google_compute_firewall" "load-balancer_firewall" {
   name    = "load-balancer-firewall"
   network = "${var.network}"
+  source_tags = ["lb"]
 
   allow {
     protocol = "tcp"
@@ -49,6 +50,7 @@ resource "google_compute_instance" "load_balancer" {
   name         = "load-balancer"
   machine_type = "${var.server_type}"
   zone         = "${var.region}-a"
+  tags         = ["lb"]
 
   boot_disk {
     initialize_params {

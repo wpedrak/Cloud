@@ -32,6 +32,7 @@ resource "google_compute_subnetwork" "www_subnetwork" {
 resource "google_compute_firewall" "www_firewall" {
   name    = "www-firewall"
   network = "${var.network}"
+  source_tags = ["server"]
 
   allow {
     protocol = "tcp"
@@ -45,6 +46,7 @@ resource "google_compute_instance" "server" {
   name         = "www-server-${count.index}"
   machine_type = "${var.server_type}"
   zone         = "${var.region}-a"
+  tags         = ["server"]
 
   boot_disk {
     initialize_params {
