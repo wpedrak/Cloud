@@ -17,8 +17,8 @@
     Metrics
     Option to make it private (IP whitelist), JIRA integration
 
-* Cachet
-    29$/mo + what you want
+* Hund
+    29$/mo + what you want (20$/20components, 0.025$/email subscriber, 1$/1 high frequency component, 100$/SSO, 70%/private site)
     Custom HTML/CSS/JS
     Integration with Pingdom/AWS CloudWatch/Pagerduty
     Integration with mail/Slack/Twitter/SMS
