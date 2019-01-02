@@ -3,6 +3,11 @@ provider "google" {
   region = "europe-west4"
 }
 
+provider "google-beta" {
+  project = "cloud2018-list2"
+  region = "europe-west4"
+}
+
 variable "region_name" {
   description = "Name of region to launch instances in."
   default     = "europe-north1"
@@ -24,6 +29,7 @@ locals {
 
 data "google_compute_image" "template-image" {
     name = "template-8-2"
+    project = "cloud2018-list2"
 }
 
 resource "google_compute_instance_template" "instance-template" {
@@ -45,16 +51,25 @@ resource "google_compute_instance_template" "instance-template" {
 }
 
 resource "google_compute_instance_group_manager" "managed-group" {
+  provider = "google-beta"
   name = "managed-group"
 
   base_instance_name = "app"
-  instance_template  = "${google_compute_instance_template.instance-template.self_link}"
-  update_strategy    = "REPLACE"
+  # update_strategy    = "REPLACE"
   zone               = "${local.zone}"
 
   # target_pools = ["${google_compute_target_pool.default.self_link}"]
   target_size  = "${var.servers_number}"
 
+  version {
+    name = "base"
+    instance_template  = "${google_compute_instance_template.instance-template.self_link}"
+  }
+
+  auto_healing_policies {
+    health_check      = "${google_compute_health_check.ah-health-check.self_link}"
+    initial_delay_sec = 60
+  }
 }
 
 # resource "google_compute_target_pool" "default" {
@@ -102,27 +117,26 @@ resource "google_compute_backend_service" "lb-backend" {
     group = "${google_compute_instance_group_manager.managed-group.instance_group}"
   }
 
-  health_checks = ["${google_compute_health_check.health-check.self_link}"]
+  health_checks = ["${google_compute_health_check.lb-health-check.self_link}"]
 }
 
-
-  # health_checks = ["${google_compute_http_health_check.default.self_link}"]
-
-
-resource "google_compute_health_check" "health-check" {
-  name               = "health-check"
-  # check_interval_sec = 10
-  # timeout_sec        = 4
-  # healthy_threshold = 1
-  # unhealthy_threshold = 10
+resource "google_compute_health_check" "lb-health-check" {
+  name               = "load-balancing-health-check"
+  check_interval_sec = 3
+  timeout_sec = 3
+  unhealthy_threshold = 1
 
   http_health_check {
   }
-
-    # tcp_health_check {
-    #   port = 80
-    # }
 }
+
+resource "google_compute_health_check" "ah-health-check" {
+  name               = "autohealing-health-check"
+
+  http_health_check {
+  }
+}
+
 
 resource "google_compute_global_forwarding_rule" "http-rule" {
   name       = "http-rule"
