@@ -2,9 +2,13 @@ from google.cloud import storage, pubsub_v1
 import os
 import time
 
-PROJECT_ID = os.environ.get('PROJECT_ID')
-BUCKET_NAME = os.environ.get('BUCKET_NAME')
-SUBSCRIPTION_NAME = os.environ.get('SUBSCRIPTION_NAME')
+def get_variable(name):
+    file = open(name, 'r')
+    return file.readline().strip()
+
+PROJECT_ID = get_variable('PROJECT_ID')
+BUCKET_NAME = get_variable('BUCKET_NAME')
+SUBSCRIPTION_NAME = get_variable('SUBSCRIPTION_NAME')
 
 
 def upload_blob(source_file_name, destination_blob_name):
