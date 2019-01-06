@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from google.cloud import storage, pubsub_v1
 import os
 import time
@@ -25,13 +27,14 @@ def upload_blob(source_file_name, destination_blob_name):
 def write_result(result, result_filename):
     NAME = result_filename
     file = open(result_filename, 'w')
-    file.write(', '.join(result))
+    file.write(', '.join([str(x) for x in result]))
     file.close()
     upload_blob(result_filename, result_filename)
 
 
 def parse_message(message):
-    return [int(x) for x in split(message)]
+    text = message.data.decode('utf-8')
+    return [int(x) for x in text.split()]
 
 
 def is_prime(number):
@@ -49,6 +52,7 @@ def callback(message):
     range_from, range_to = parse_message(message)
     result = find_primes(range_from, range_to)
     result_filename = "result-from-{}-to-{}.txt".format(range_from, range_to)
+    print("result is: ", result)
     write_result(result, result_filename)
     message.ack()
 

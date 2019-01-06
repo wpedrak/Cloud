@@ -8,8 +8,10 @@ publisher = pubsub_v1.PublisherClient()
 # in the form `projects/{PROJECT_ID}/topics/{TOPIC_NAME}`
 topic_path = publisher.topic_path(PROJECT_ID, TOPIC_NAME)
 
-for i in range(1, int(1e4), 1000):
-    data = u'{} {}'.format(i, i + 1000)
+STEP = 1000
+
+for i in range(1, 100, STEP):
+    data = u'{} {}'.format(i, i + STEP)
     # Data must be a bytestring
     data = data.encode('utf-8')
     # When you publish a message, the client returns a future.
