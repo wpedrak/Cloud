@@ -29,7 +29,9 @@ def parse_message(message):
     return [int(x) for x in split(message)]
 
 def is_prime(number):
-    return not any([number % x == 0 for x in range(2,number)])
+    if number < 2:
+        return False
+    return all([number % x != 0 for x in range(2,number)])
 
 def find_primes(range_from, range_to):
     return [x for x in range(range_from, range_to) if is_prime(x)]
