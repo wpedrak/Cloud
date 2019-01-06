@@ -6,10 +6,10 @@ PROJECT_ID = "tmp1"
 BUCKET_NAME = "tmp2"
 SUBSCRIPTION_NAME = "tmp3"
 
-def upload_blob(bucket_name, source_file_name, destination_blob_name):
+def upload_blob(source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""
     storage_client = storage.Client()
-    bucket = storage_client.get_bucket(bucket_name)
+    bucket = storage_client.get_bucket(BUCKET_NAME)
     blob = bucket.blob(destination_blob_name)
     blob.upload_from_filename(source_file_name)
     print('File {} uploaded to {}.'.format(
@@ -22,7 +22,7 @@ def write_result(result, result_filename):
     file = open(result_filename, 'w')
     file.write(', '.join(result))
     file.close()
-    upload_blob(BUCKET_NAME, result_filename, result_filename)
+    upload_blob(result_filename, result_filename)
 
 
 def parse_message(message):
@@ -46,8 +46,8 @@ def callback(message):
 
 subscriber = pubsub_v1.SubscriberClient()
 # The `subscription_path` method creates a fully qualified identifier
-# in the form `projects/{project_id}/subscriptions/{subscription_name}`
-subscription_path = subscriber.subscription_path(project_id, subscription_name)
+# in the form `projects/{PROJECT_ID}/subscriptions/{SUBSCRIPTION_NAME}`
+subscription_path = subscriber.subscription_path(PROJECT_ID, SUBSCRIPTION_NAME)
 subscriber.subscribe(subscription_path, callback=callback)
 
 # The subscriber is non-blocking. We must keep the main thread from
