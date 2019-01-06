@@ -1,10 +1,11 @@
 from google.cloud import storage, pubsub_v1
-
+import os
 import time
 
-PROJECT_ID = "tmp1"
-BUCKET_NAME = "tmp2"
-SUBSCRIPTION_NAME = "tmp3"
+PROJECT_ID = os.environ.get('PROJECT_ID')
+BUCKET_NAME = os.environ.get('BUCKET_NAME')
+SUBSCRIPTION_NAME = os.environ.get('SUBSCRIPTION_NAME')
+
 
 def upload_blob(source_file_name, destination_blob_name):
     """Uploads a file to the bucket."""
@@ -28,10 +29,12 @@ def write_result(result, result_filename):
 def parse_message(message):
     return [int(x) for x in split(message)]
 
+
 def is_prime(number):
     if number < 2:
         return False
-    return all([number % x != 0 for x in range(2,number)])
+    return all([number % x != 0 for x in range(2, number)])
+
 
 def find_primes(range_from, range_to):
     return [x for x in range(range_from, range_to) if is_prime(x)]
@@ -57,6 +60,3 @@ subscriber.subscribe(subscription_path, callback=callback)
 print('Listening for messages on {}'.format(subscription_path))
 while True:
     time.sleep(60)
-
-
-upload_blob("result-holder", 'tmp.txt', 'result.txt')
