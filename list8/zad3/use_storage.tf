@@ -34,7 +34,7 @@ resource "google_pubsub_subscription" "task-sub" {
   name  = "subscription-8-3"
   topic = "${google_pubsub_topic.task-topic.name}"
 
-  ack_deadline_seconds = 180
+  ack_deadline_seconds = 300
 }
 
 resource "google_compute_instance" "server" {
@@ -57,7 +57,7 @@ resource "google_compute_instance" "server" {
     }
   }
 
-  metadata_startup_script = "export PROJECT_ID=${data.google_project.project.project_id}; export BUCKET_NAME=${google_storage_bucket.result-holder.name}; export SUBSCRIPTION_NAME=${google_pubsub_subscription.task-sub.name}; echo ${data.google_project.project.project_id} > ~/a.txt; echo ${google_storage_bucket.result-holder.name} > ~/b.txt; echo ${google_pubsub_subscription.task-sub.name} > ~/c.txt"
+  metadata_startup_script = "echo ${data.google_project.project.project_id} > /home/wojciechpedrak/PROJECT_ID; echo ${google_storage_bucket.result-holder.name} > /home/wojciechpedrak/BUCKET_NAME; echo ${google_pubsub_subscription.task-sub.name} > /home/wojciechpedrak/SUBSCRIPTION_NAME"
 
   service_account {
     email = "${google_service_account.zad8-3.email}"
