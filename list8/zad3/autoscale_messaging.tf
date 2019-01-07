@@ -48,7 +48,7 @@ resource "google_pubsub_subscription" "task-sub" {
   name  = "subscription-8-3"
   topic = "${google_pubsub_topic.task-topic.name}"
 
-  ack_deadline_seconds = 300
+  ack_deadline_seconds = 120
 }
 
 # resource "google_compute_instance" "server" {
@@ -97,7 +97,7 @@ resource "google_compute_instance_template" "instance-template" {
     auto_delete  = true
     boot         = true
   }
-  metadata_startup_script = "echo ${data.google_project.project.project_id} > /home/wojciechpedrak/PROJECT_ID; echo ${google_storage_bucket.result-holder.name} > /home/wojciechpedrak/BUCKET_NAME; echo ${google_pubsub_subscription.task-sub.name} > /home/wojciechpedrak/SUBSCRIPTION_NAME; cd /home/wojciechpedrak/; ./task.py > testing.out 2> testing.err"
+  metadata_startup_script = "echo ${data.google_project.project.project_id} > /home/wojciechpedrak/PROJECT_ID; echo ${google_storage_bucket.result-holder.name} > /home/wojciechpedrak/BUCKET_NAME; echo ${google_pubsub_subscription.task-sub.name} > /home/wojciechpedrak/SUBSCRIPTION_NAME; cd /home/wojciechpedrak/; ./task.py > testing.out 2> testing.err; ./abc.py > abc.out 2> abc.err"
   service_account {
     email  = "${google_service_account.zad8-3.email}"
     scopes = ["storage-rw", "pubsub"]
@@ -126,13 +126,22 @@ resource "google_compute_autoscaler" "autoscaler-for-queue" {
   target = "${google_compute_instance_group_manager.managed-group.self_link}"
 
   autoscaling_policy = {
-    max_replicas    = 2
+    max_replicas    = 3
     min_replicas    = 1
-    cooldown_period = 60
+    cooldown_period = 30
 
     cpu_utilization {
-      target = 0.5
+      target = 0.8
     }
+
+    # non implemented in provider (even beta):
+    # https://cloud.google.com/compute/docs/autoscaler/scaling-stackdriver-monitoring-metrics
+
+    # metric {
+    #   name = "pubsub.googleapis.com/subscription/num_undelivered_messages"
+    #   target = 0
+    #   type = "GUAGE"
+    # }
   }
 }
 
