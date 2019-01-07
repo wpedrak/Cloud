@@ -9,7 +9,7 @@ publisher = pubsub_v1.PublisherClient()
 # in the form `projects/{PROJECT_ID}/topics/{TOPIC_NAME}`
 topic_path = publisher.topic_path(PROJECT_ID, TOPIC_NAME)
 
-NUMBER_OF_TASKS = 10
+NUMBER_OF_TASKS = 3
 MAGIC_NUMBER = 5e8
 range_left = 1
 
