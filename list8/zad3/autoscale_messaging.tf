@@ -80,7 +80,7 @@ resource "google_pubsub_subscription" "task-sub" {
 # }
 
 data "google_compute_image" "template-image" {
-  name    = "python-for-8-3"
+  name    = "python-for-8-3-tmp"
   project = "cloud2018-list2"
 }
 
