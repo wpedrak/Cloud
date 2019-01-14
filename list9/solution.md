@@ -17,6 +17,16 @@
 * In general: paths and key/value pairs
 * Many engines (start of path), many usages (e.g. **aws** for IAM roles generation, **database** for on-demand, time limited database creds)
 
+###### Torus (Beta)
+
+* This is workspace for secrets. You can create projects and teams and grant access for specific users. 
+* One need torus on his machine. Use **torus run [command to run your application]** to inject secrets into environment.
+* Client is open source
+* Uses paths (**/org/project/environment/service/secret**) to identify secret. PS. wildcards supported
+* Features: 
+  * Can export to terraform variable file
+  * Will integrate with Ansible
+
 ###### Cloud KMS
 
 * do it yourself... god, why?
