@@ -1,28 +1,26 @@
 var http = require('http');
-var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 var pgp = require('pg-promise')(/*options*/)
-app.use(bodyParser.urlencoded({ extended: false }));
 DB_PASSWORD = ''
 DB_IP = '35.204.186.169'
 var db = pgp(process.env.DB_URL || 'postgres://wpedrak:' + DB_PASSWORD + '@' + DB_IP + ':5432/notes')
 
-
-app.post('/write', (req, res) => {
-    var note = req.body.note;
-    console.log(note);
-    
-    db.any('INSERT INTO notes VALUES ($1)', note)
+app.get('/notes',(req,res) => {
+    db.any('SELECT * FROM notes')
     .then(function (data) {
-        console.log('added')
-        res.send('done');
+        // console.log('DATA:', data)
+        var arrayed = data.map( elem => {
+            return elem.note
+        });
+        console.log('DATA:', arrayed)
+        return res.send('' + arrayed)
     })
     .catch(function (error) {
         console.log('ERROR:', error)
         res.send("[error]: " + error)
     })
-})
+});
 
-var server = http.createServer(app).listen(4000);
+var server = http.createServer(app).listen(5000);
 console.log( 'server started' );
