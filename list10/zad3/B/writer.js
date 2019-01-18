@@ -4,8 +4,8 @@ var express = require('express');
 var app = express();
 var pgp = require('pg-promise')(/*options*/)
 app.use(bodyParser.urlencoded({ extended: false }));
-DB_PASSWORD = ''
-DB_IP = '35.204.186.169'
+var DB_PASSWORD = process.env.DB_PASSWORD || ''
+var DB_IP = process.env.DB_IP || '35.204.186.169'
 var db = pgp(process.env.DB_URL || 'postgres://wpedrak:' + DB_PASSWORD + '@' + DB_IP + ':5432/notes')
 
 
