@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-deployment
+  labels:
+    app: back-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: back
+  template:
+    metadata:
+      labels:
+        app: back
+    spec:
+      containers:
+      - name: writer
+        image: wpedrak/writer
+        env:
+        - name: DB_IP
+          value: "10.27.112.3"
+        - name: DB_PASSWORD
+          value: "12345"
+        ports:
+        - containerPort: 4000
+      - name: reader
+        image: wpedrak/reader
+        env:
+        - name: DB_IP
+          value: "10.27.112.3"
+        - name: DB_PASSWORD
+          value: "12345"
+        ports:
+        - containerPort: 5000
