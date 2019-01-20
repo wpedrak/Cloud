@@ -15,21 +15,44 @@ spec:
         app: back
     spec:
       containers:
-      - name: writer
-        image: wpedrak/writer
-        env:
-        - name: DB_IP
-          value: "10.27.112.3"
-        - name: DB_PASSWORD
-          value: "12345"
-        ports:
-        - containerPort: 4000
-      - name: reader
-        image: wpedrak/reader
-        env:
-        - name: DB_IP
-          value: "10.27.112.3"
-        - name: DB_PASSWORD
-          value: "12345"
-        ports:
-        - containerPort: 5000
+        - name: writer
+          image: wpedrak/writer
+          env:
+          - name: DB_IP
+            value: "127.0.0.1"
+          - name: DB_PASSWORD
+            value: "12345"
+          ports:
+          - containerPort: 4000
+        - name: reader
+          image: wpedrak/reader
+          env:
+          - name: DB_IP
+            value: "127.0.0.1"
+          - name: DB_PASSWORD
+            value: "12345"
+          ports:
+          - containerPort: 5000
+        # [START proxy_container]
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
+          command: ["/cloud_sql_proxy",
+                    "-instances=cloud2018-list2:europe-west4:notes-db5=tcp:5432",
+                    "-credential_file=/secrets/cloudsql/credentials.json"]
+              
+          # [START cloudsql_security_context]
+          securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          # [END cloudsql_security_context]
+          volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+        # [END proxy_container]
+      # [START volumes]
+      volumes:
+        - name: cloudsql-instance-credentials
+          secret:
+            secretName: cloudsql-instance-credentials
+      # [END volumes]

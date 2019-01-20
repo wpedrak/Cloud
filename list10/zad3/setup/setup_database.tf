@@ -4,7 +4,7 @@ provider "google" {
 }
 
 resource "google_sql_database_instance" "notes-db" {
-  name             = "notes-db4"
+  name             = "notes-db5"
   database_version = "POSTGRES_9_6"
   region           = "europe-west4"
 

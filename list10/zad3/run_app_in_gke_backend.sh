@@ -1,4 +1,4 @@
 #!/bin/bash
 
-kubectl create -f back-deployment.yml 
-kubectl create -f back-service.yml
+kubectl create -f setup/back-deployment.yml 
+kubectl create -f setup/back-service.yml
