@@ -13,15 +13,16 @@ app.post('/write', (req, res) => {
     var note = req.body.note;
     console.log(note);
     
-    db.any('INSERT INTO notes VALUES ($1)', note)
-    .then(function (data) {
-        console.log('added')
-        res.send('done');
-    })
-    .catch(function (error) {
-        console.log('ERROR:', error)
-        res.send("[error]: " + error)
-    })
+    res.send('done');
+    // db.any('INSERT INTO notes VALUES ($1)', note)
+    // .then(function (data) {
+    //     console.log('added')
+    //     res.send('done');
+    // })
+    // .catch(function (error) {
+    //     console.log('ERROR:', error)
+    //     res.send("[error]: " + error)
+    // })
 })
 
 var server = http.createServer(app).listen(4000);
