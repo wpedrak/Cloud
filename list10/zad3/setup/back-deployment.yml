@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: writer
-          image: wpedrak/writer
+          image: wpedrak/writer:1.0
           env:
           - name: DB_IP
             value: "127.0.0.1"
@@ -38,8 +38,7 @@ spec:
           image: gcr.io/cloudsql-docker/gce-proxy:1.11
           command: ["/cloud_sql_proxy",
                     "-instances=cloud2018-list2:europe-west4:notes-db5=tcp:5432",
-                    "-credential_file=/secrets/cloudsql/credentials.json"]
-              
+                    "-credential_file=/secrets/cloudsql/private.json"]
           # [START cloudsql_security_context]
           securityContext:
             runAsUser: 2  # non-root user
@@ -50,9 +49,29 @@ spec:
               mountPath: /secrets/cloudsql
               readOnly: true
         # [END proxy_container]
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - back
+              topologyKey: "kubernetes.io/hostname"
+
       # [START volumes]
       volumes:
         - name: cloudsql-instance-credentials
           secret:
             secretName: cloudsql-instance-credentials
       # [END volumes]
+
+# for secret:
+# kubectl create secret generic cloudsql-instance-credentials --from-file ~/.gcp/private.json
+
+# deployment status:
+# kubectl rollout history deployment.v1.apps/back-deployment
+
+# deployment rollback
+# 

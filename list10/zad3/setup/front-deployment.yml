@@ -16,12 +16,21 @@ spec:
     spec:
       containers:
       - name: front
-        image: wpedrak/front:0.4
+        image: wpedrak/front
         env:
         - name: WRITER_IP
-          value: "10.47.251.170"
+          value: "10.47.246.179"
         - name: READER_IP
-          value: "10.47.251.170"
+          value: "10.47.246.179"
         ports:
         - containerPort: 3000
-
+      affinity:
+              podAntiAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - labelSelector:
+                      matchExpressions:
+                        - key: "app"
+                          operator: In
+                          values:
+                          - front
+                    topologyKey: "kubernetes.io/hostname"
