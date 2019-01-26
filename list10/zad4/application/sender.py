@@ -1,4 +1,5 @@
 import pika
+import sys
 
 QUEUE_NAME = 'requests'
 HOST = 'localhost'
@@ -11,7 +12,9 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(
 channel = connection.channel()
 channel.queue_declare(queue=QUEUE_NAME)
 
-body = '1 2'
+range_from, range_to = sys.argv[1], sys.argv[2]
+
+body = f"{range_from} {range_to}"
 
 channel.basic_publish(exchange='',
                       routing_key=QUEUE_NAME,

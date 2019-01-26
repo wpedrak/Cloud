@@ -1,6 +1,7 @@
 import pika
 
-QUEUE_NAME = 'requests'
+REQUEST_QUEUE = 'requests'
+RESULT_QUEUE = 'results'
 HOST = 'localhost'
 PORT = '5672'
 
@@ -8,11 +9,18 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(
     host=HOST,
     port=PORT))
 channel = connection.channel()
-channel.queue_declare(queue=QUEUE_NAME)
+channel.queue_declare(queue=REQUEST_QUEUE)
+channel.queue_declare(queue=RESULT_QUEUE)
+
+
+def put_in_result_queue(message):
+    channel.basic_publish(exchange='',
+                          routing_key=RESULT_QUEUE,
+                          body=message)
 
 
 def parse_message(message):
-    text = message.data.decode('utf-8')
+    text = message.decode('utf-8')
     return [int(x) for x in text.split()]
 
 
@@ -26,22 +34,23 @@ def find_primes(range_from, range_to):
     return [x for x in range(range_from, range_to) if is_prime(x)]
 
 
-def write_result(result):
-    print(result)
+def write_result(range_from, range_to, result):
+    message = f"[{range_from} {range_to}]: " + ", ".join(map(str, result))
+    put_in_result_queue(message)
 
 
 def callback(ch, method, properties, body):
     message = body
-    print("Received:", body)
+    print("Received:", message)
     range_from, range_to = parse_message(message)
     result = find_primes(range_from, range_to)
-
-    write_result(result)
+    write_result(range_from, range_to, result)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+    print("processed")
 
 
 channel.basic_consume(callback,
-                      queue=QUEUE_NAME,
-                      no_ack=True)
+                      queue=REQUEST_QUEUE)
 
 print('Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()
