@@ -35,5 +35,26 @@ ETL (extract, transform, load). Used for:
   * more data sources: jira, slack, wordpress, google apps
 
 #### 6
-* generating of rotated secrets in AWS Secrets Manager
+* generating of rotated secrets in AWS Secrets Manager (example in postgres)
+  * switch ->
+  * create new password
+  * set password in DB
+  * test if it works
+  * change state from pending to current
 * triggering jenkins build after push to git
+  * lambda triggered by commit to codecommit
+  * poke jenkins via http to start build
+
+#### 9
+###### Redshift vs clasic DB
+* Redshift is faster (parallel)
+* Redshift compress data by default (encoding)
+* Can be scaled horizontally!!!
+
+###### Data warehouse vs data lake
+|                 | Data Lake                             | Data Warehouse                              |
+|-----------------|---------------------------------------|---------------------------------------------|
+| Data Structure  | Raw                                   | Processed                                   |
+| Purpose of Data | Not Yet Determined                    | Currently In Use                            |
+| Users           | Data Scientists                       | Business Professionals                      |
+| Accessibility   | Highly accessible and quick to update | More complicated and costly to make changes |
