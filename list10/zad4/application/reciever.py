@@ -1,8 +1,9 @@
 import pika
+import os
 
 REQUEST_QUEUE = 'requests'
 RESULT_QUEUE = 'results'
-HOST = 'localhost'
+HOST = os.environ['HOST']
 PORT = '5672'
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(
