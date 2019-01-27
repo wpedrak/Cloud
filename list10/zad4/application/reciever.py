@@ -5,10 +5,14 @@ REQUEST_QUEUE = 'requests'
 RESULT_QUEUE = 'results'
 HOST = os.environ['HOST']
 PORT = '5672'
+RABBITMQ_USER, RABBITMQ_PASS = 'guest', 'guest'
 
+credentials = pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASS)
 connection = pika.BlockingConnection(pika.ConnectionParameters(
     host=HOST,
-    port=PORT))
+    port=PORT,
+    socket_timeout=1000,
+    credentials=credentials))
 channel = connection.channel()
 channel.queue_declare(queue=REQUEST_QUEUE)
 channel.queue_declare(queue=RESULT_QUEUE)
