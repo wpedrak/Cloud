@@ -1,6 +1,6 @@
 #### 4
 ###### serverless
-* serverlss.yaml (ustawienia i routy w jednym miejscu)
+* serverlss.yaml (settings and routs in one place)
 * functions in one file
 * invoke function via serverless call
 * access to basic logs from cli
